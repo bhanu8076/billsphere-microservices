@@ -1,6 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const billingLimiter = require(
+  './middleware/rateLimiter'
+);
 
 const billingRoutes = require('./routes/billing.routes');
 
@@ -16,6 +19,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(billingLimiter);
 
 app.use('/api/bills', billingRoutes);
 

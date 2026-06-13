@@ -15,9 +15,13 @@ const {
   '../controllers/auth.controller'
 );
 
-router.post('/register', register);
+const authLimiter = require(
+  '../middleware/rateLimiter'
+);
 
-router.post('/login', login);
+router.post('/register', authLimiter, register);
+
+router.post('/login', authLimiter, login);
 
 router.post('/logout', logout);
 

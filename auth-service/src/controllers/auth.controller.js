@@ -81,9 +81,28 @@ exports.login = async (req, res) => {
 };
 
 exports.logout = async (req, res) => {
-    res.clearCookie('token');
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: false,
+    sameSite: 'lax',
+  });
 
+  res.status(200).json({
+    success: true,
+    message: 'Logged out successfully',
+  });
+};
+
+exports.getProfile = async (req, res) => {
+  try {
     res.status(200).json({
-        message: 'Logged out successfully'
+      success: true,
+      user: req.user,
     });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };

@@ -1,3 +1,6 @@
+const {
+  redisClient,
+} = require('../config/redis');
 const Bill = require('../models/Bill');
 
 exports.createBill = async (req, res) => {
@@ -17,6 +20,8 @@ exports.createBill = async (req, res) => {
       dueDate,
     });
 
+    await redisClient.del(`bills:${req.user.id}`);
+
     res.status(201).json({
       success: true,
       message: 'Bill created successfully',
@@ -32,15 +37,34 @@ exports.createBill = async (req, res) => {
 
 exports.getBills = async (req, res) => {
   try {
+    const cacheKey = `bills:${req.user.id}`;
+
+    const cachedBills =
+      await redisClient.get(cacheKey);
+
+    if (cachedBills) {
+      return res.status(200).json({
+        success: true,
+        source: 'redis-cache',
+        bills: JSON.parse(cachedBills),
+      });
+    }
+
     const bills = await Bill.find({
       userId: req.user.id,
     }).sort({
       createdAt: -1,
     });
 
+    await redisClient.setEx(
+      cacheKey,
+      60,
+      JSON.stringify(bills)
+    );
+
     res.status(200).json({
       success: true,
-      count: bills.length,
+      source: 'mongodb',
       bills,
     });
   } catch (error) {

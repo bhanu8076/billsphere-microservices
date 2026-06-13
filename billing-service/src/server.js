@@ -7,6 +7,10 @@ const {
   connectRedis,
 } = require('./config/redis');
 
+const {
+  connectProducer,
+} = require('./kafka/producer');
+
 const PORT = process.env.PORT || 5002;
 
 const startServer = async () => {
@@ -14,6 +18,8 @@ const startServer = async () => {
     await connectDB();
 
     await connectRedis();
+
+    await connectProducer();
 
     app.listen(PORT, () => {
       console.log(

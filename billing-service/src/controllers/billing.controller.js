@@ -1,6 +1,9 @@
 const {
   redisClient,
 } = require('../config/redis');
+const {
+  producer,
+} = require('../kafka/producer');
 const Bill = require('../models/Bill');
 
 exports.createBill = async (req, res) => {
@@ -21,6 +24,28 @@ exports.createBill = async (req, res) => {
     });
 
     await redisClient.del(`bills:${req.user.id}`);
+
+    await producer.send({
+      topic: "bill-events",
+
+      messages: [
+        {
+          value: JSON.stringify({
+            event: "BILL_CREATED",
+
+            billId: bill._id,
+
+            userId: req.user.id,
+
+            amount: bill.amount,
+
+            category: bill.category,
+
+            createdAt: bill.createdAt,
+          }),
+        },
+      ],
+    });
 
     res.status(201).json({
       success: true,

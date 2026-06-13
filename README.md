@@ -1,20 +1,44 @@
 # BillSphere
 
-Subscription Billing & Usage Analytics Platform built using:
+BillSphere is an event-driven Subscription Billing & Usage Analytics Platform built using microservices architecture.
 
+## Tech Stack
+
+### Frontend
 - React
+- Redux Toolkit
+- SCSS
+- Axios
+- React Router
+
+### Backend
 - Node.js
-- Express
+- Express.js
+
+### Databases
 - PostgreSQL
 - MongoDB
-- Redis
+
+### Messaging
 - Kafka
+
+### Caching
+- Redis
+
+### Security
+- JWT Authentication
+- Google OAuth
+- HttpOnly Cookies
+- Rate Limiting
+
+### DevOps
 - Docker
-- AWS
+- Docker Compose
+- AWS EC2 Free Tier
 
-Architecture:
+## Microservices
 
+- Frontend Service
 - Auth Service
 - Billing Service
 - Usage Service
-- Frontend

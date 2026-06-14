@@ -1,36 +1,53 @@
-const { Kafka } = require('kafkajs');
+const { Kafka } = require("kafkajs");
+const Usage = require("../models/Usage");
 
 const kafka = new Kafka({
-  clientId: 'usage-service',
+  clientId: "usage-service",
   brokers: [process.env.KAFKA_BROKER],
 });
 
 const consumer = kafka.consumer({
-  groupId: 'usage-group',
+  groupId: "usage-group",
 });
 
 const runConsumer = async () => {
   await consumer.connect();
 
   await consumer.subscribe({
-    topic: 'bill-events',
+    topic: "bill-events",
     fromBeginning: true,
   });
 
-  console.log('Kafka Consumer Connected');
+  console.log("Kafka Consumer Connected");
 
   await consumer.run({
-    eachMessage: async ({
-      message,
-    }) => {
-      const event = JSON.parse(
-        message.value.toString()
-      );
+    eachMessage: async ({ message }) => {
+      const event = JSON.parse(message.value.toString());
 
-      console.log(
-        'Received Event:',
-        event
-      );
+      if (event.event === "BILL_CREATED") {
+        await Usage.findOneAndUpdate(
+          {
+            userId: event.userId,
+          },
+
+          {
+            $inc: {
+              totalBills: 1,
+
+              totalAmount: event.amount,
+
+              [`categories.${event.category}`]: event.amount,
+            },
+          },
+
+          {
+            upsert: true,
+            new: true,
+          },
+        );
+
+        console.log("Usage analytics updated");
+      }
     },
   });
 };

@@ -1,21 +1,17 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { fetchBills } from '../features/bills/billThunk';
+import { fetchBills } from "../features/bills/billThunk";
 
-import Navbar from '../components/Navbar/Navbar';
+import Navbar from "../components/Navbar/Navbar";
 
-import CreateBill from './CreateBill';
+import CreateBill from "./CreateBill";
+import ErrorMessage from "../components/ErrorMessage/ErrorMessage";
 
 function Bills() {
   const dispatch = useDispatch();
 
-  const {
-    bills,
-    loading,
-  } = useSelector(
-    (state) => state.bills
-  );
+  const { bills, loading } = useSelector((state) => state.bills);
 
   useEffect(() => {
     dispatch(fetchBills());
@@ -32,28 +28,30 @@ function Bills() {
 
         {loading ? (
           <p>Loading...</p>
+        ) : error ? (
+          <ErrorMessage message={error} />
         ) : (
-          <div className="bill-list">
-            {bills.map((bill) => (
-              <div
-                className="bill-card"
-                key={bill._id}
-              >
-                <h3>{bill.title}</h3>
+          <table className="bills-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Date</th>
+              </tr>
+            </thead>
 
-                <p>
-                  Amount: ₹
-                  {bill.amount}
-                </p>
-
-                <p>
-                  Category:
-                  {' '}
-                  {bill.category}
-                </p>
-              </div>
-            ))}
-          </div>
+            <tbody>
+              {bills.map((bill) => (
+                <tr key={bill._id}>
+                  <td>{bill.title}</td>
+                  <td>{bill.category}</td>
+                  <td>₹{bill.amount}</td>
+                  <td>{new Date(bill.createdAt).toLocaleDateString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
       </div>
     </>

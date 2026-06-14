@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import logger from '../../utils/logger';
 
 import {
   getDashboardStatsAPI,

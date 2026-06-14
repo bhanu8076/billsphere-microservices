@@ -1,23 +1,15 @@
 import { useEffect } from 'react';
-
-import {
-  useDispatch,
-} from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import AppRoutes from './routes/AppRoutes';
 
-import {
-  getCurrentUser,
-} from './features/auth/authThunk';
+import { getCurrentUser } from './features/auth/authThunk';
 
 function App() {
-  const dispatch =
-    useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      getCurrentUser()
-    );
+    dispatch(getCurrentUser());
   }, [dispatch]);
 
   return <AppRoutes />;

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/auth/authThunk";
 import { googleLogin } from "../features/auth/authAPI";
 import { useNavigate, Link } from "react-router-dom";
+import ErrorMessage from "../components/ErrorMessage/ErrorMessage";
 
 function Login() {
   const dispatch = useDispatch();
@@ -65,7 +66,7 @@ function Login() {
           Continue with Google
         </button>
 
-        {error && <p className="auth-error">{error}</p>}
+        {error && <ErrorMessage message={error} />}
 
         <div className="auth-footer">
           Don't have an account? <Link to="/register">Register</Link>

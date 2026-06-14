@@ -25,15 +25,8 @@ export const googleLogin = () => {
     'http://localhost:5001/api/auth/google';
 };
 
-export const getMeAPI = () => {
+export const getCurrentUserAPI = () => {
   return api.get(
     'http://localhost:5001/api/auth/me'
   );
 };
-
-export const getCurrentUserAPI =
-  () => {
-    return api.get(
-      'http://localhost:5001/api/auth/me'
-    );
-  };

@@ -23,6 +23,7 @@ const billSlice = createSlice({
 
       .addCase(fetchBills.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
 
       .addCase(fetchBills.fulfilled, (state, action) => {
@@ -35,8 +36,16 @@ const billSlice = createSlice({
         state.error = action.payload;
       })
 
+      .addCase(createBill.pending, (state) => {
+        state.error = null;
+      })
+
       .addCase(createBill.fulfilled, (state, action) => {
         state.bills.unshift(action.payload);
+      })
+
+      .addCase(createBill.rejected, (state, action) => {
+        state.error = action.payload;
       });
   },
 });

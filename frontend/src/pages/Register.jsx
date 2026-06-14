@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../features/auth/authThunk";
 import { useNavigate, Link } from "react-router-dom";
+import ErrorMessage from "../components/ErrorMessage/ErrorMessage";
 
 function Register() {
   const dispatch = useDispatch();
@@ -70,7 +71,7 @@ function Register() {
           </button>
         </form>
 
-        {error && <p className="auth-error">{error}</p>}
+        {error && <ErrorMessage message={error} />}
 
         <div className="auth-footer">
           Already have an account? <Link to="/login">Login</Link>

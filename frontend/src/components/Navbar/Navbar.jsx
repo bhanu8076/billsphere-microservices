@@ -1,33 +1,28 @@
-import "./Navbar.scss";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-
-import { logoutUserAsync } from "../../features/auth/authThunk";
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logoutUser } from '../../features/auth/authThunk';
+import './Navbar.scss';
 
 function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    await dispatch(logoutUserAsync());
-
+  const handleLogout = () => {
+    dispatch(logoutUser());
     navigate("/login");
   };
 
   return (
     <nav className="navbar">
-      <h2 className="navbar__logo">BillSphere</h2>
+      <div className="navbar__logo">BillSphere</div>
 
-      <div>
+      <div className="navbar__links">
         <Link to="/dashboard">Dashboard</Link>
-
-        {" | "}
-
         <Link to="/bills">Bills</Link>
       </div>
 
-      <button className="navbar__logout" onClick={handleLogout}>
+      <button className="logout-btn" onClick={handleLogout}>
         Logout
       </button>
     </nav>

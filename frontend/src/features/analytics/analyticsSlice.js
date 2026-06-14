@@ -27,6 +27,7 @@ const analyticsSlice =
           fetchDashboardStats.pending,
           (state) => {
             state.loading = true;
+            state.error = null;
           }
         )
 

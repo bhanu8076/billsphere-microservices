@@ -1,23 +1,27 @@
 import { useState } from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { createBill } from '../features/bills/billThunk';
+import ErrorMessage from '../components/ErrorMessage/ErrorMessage';
 
 function CreateBill() {
   const dispatch = useDispatch();
+  const { error } = useSelector((state) => state.bills);
 
   const [bill, setBill] = useState({
     title: '',
     amount: '',
-    category: '',
+    category: 'Electricity',
+    dueDate: '',
   });
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+
     setBill({
       ...bill,
-      [e.target.name]:
-        e.target.value,
+      [name]: value,
     });
   };
 
@@ -29,7 +33,8 @@ function CreateBill() {
     setBill({
       title: '',
       amount: '',
-      category: '',
+      category: 'Electricity',
+      dueDate: '',
     });
   };
 
@@ -56,11 +61,23 @@ function CreateBill() {
         required
       />
 
-      <input
-        type="text"
+      <select
         name="category"
-        placeholder="Category"
         value={bill.category}
+        onChange={handleChange}
+        required
+      >
+        <option value="Electricity">Electricity</option>
+        <option value="Internet">Internet</option>
+        <option value="Water">Water</option>
+        <option value="Rent">Rent</option>
+        <option value="Others">Others</option>
+      </select>
+
+      <input
+        type="date"
+        name="dueDate"
+        value={bill.dueDate}
         onChange={handleChange}
         required
       />
@@ -68,6 +85,8 @@ function CreateBill() {
       <button type="submit">
         Add Bill
       </button>
+
+      {error && <ErrorMessage message={error} />}
     </form>
   );
 }

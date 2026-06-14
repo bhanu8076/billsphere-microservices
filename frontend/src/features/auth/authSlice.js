@@ -3,16 +3,15 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   loginUser,
   registerUser,
-  logoutUserAsync,
+  logoutUser,
   getCurrentUser,
-
 } from './authThunk';
 
 const initialState = {
   user: null,
-  loading: false,
-  error: null,
   isAuthenticated: false,
+  loading: true,
+  error: null,
 };
 
 const authSlice = createSlice({
@@ -25,73 +24,75 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-      .addCase(
-        registerUser.pending,
-        (state) => {
-          state.loading = true;
-        }
-      )
+      // Register
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
 
-      .addCase(
-        registerUser.fulfilled,
-        (state, action) => {
-          state.loading = false;
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user || action.payload;
+        state.isAuthenticated = true;
+      })
 
-          state.user =
-            action.payload.user;
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.isAuthenticated = false;
+      })
 
-          state.isAuthenticated = true;
-        }
-      )
+      // Login
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
 
-      .addCase(
-        registerUser.rejected,
-        (state, action) => {
-          state.loading = false;
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user || action.payload;
+        state.isAuthenticated = true;
+      })
 
-          state.error = action.payload;
-        }
-      )
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.isAuthenticated = false;
+      })
 
-      .addCase(
-        loginUser.fulfilled,
-        (state, action) => {
-          state.user =
-            action.payload.user;
+      // Get Current User (Persistence)
+      .addCase(getCurrentUser.pending, (state) => {
+        state.loading = true;
+      })
 
-          state.isAuthenticated = true;
-        }
-      )
+      .addCase(getCurrentUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user || action.payload;
+        state.isAuthenticated = true;
+      })
 
-      .addCase(
-        logoutUserAsync.fulfilled,
-        (state) => {
-          state.user = null;
+      .addCase(getCurrentUser.rejected, (state) => {
+        state.loading = false;
+        state.user = null;
+        state.isAuthenticated = false;
+      })
 
-          state.isAuthenticated = false;
-        }
-      )
+      // Logout
+      .addCase(logoutUser.pending, (state) => {
+        state.loading = true;
+      })
 
-      .addCase(
-        getCurrentUser.fulfilled,
-        (state, action) => {
-          state.user =
-            action.payload;
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.loading = false;
+        state.user = null;
+        state.isAuthenticated = false;
+        state.error = null;
+      })
 
-          state.isAuthenticated =
-            true;
-        }
-      )
-
-      .addCase(
-        getCurrentUser.rejected,
-        (state) => {
-          state.user = null;
-
-          state.isAuthenticated =
-            false;
-        }
-      );
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 

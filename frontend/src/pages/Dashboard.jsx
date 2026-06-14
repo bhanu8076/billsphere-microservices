@@ -1,44 +1,108 @@
-import Navbar from '../components/Navbar/Navbar';
+import { useEffect } from 'react';
+
+import {
+  useDispatch,
+  useSelector,
+} from 'react-redux';
+
+import Navbar from
+'../components/Navbar/Navbar';
+
+import {
+  fetchDashboardStats,
+} from '../features/analytics/analyticsThunk';
 
 function Dashboard() {
+  const dispatch =
+    useDispatch();
+
+  const {
+    stats,
+    loading,
+  } = useSelector(
+    (state) =>
+      state.analytics
+  );
+
+  useEffect(() => {
+    dispatch(
+      fetchDashboardStats()
+    );
+  }, [dispatch]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
       <Navbar />
 
-      <div
-        style={{
-          padding: '40px',
-        }}
-      >
+      <div className="dashboard">
         <h1>
-          Welcome to BillSphere
+          Usage Analytics
         </h1>
 
-        <p>
-          Authentication Successful
-        </p>
+        {stats && (
+          <>
+            <div className="stats-grid">
+              <div className="stat-card">
+                <h3>
+                  Total Bills
+                </h3>
 
-        <br />
+                <p>
+                  {
+                    stats.totalBills
+                  }
+                </p>
+              </div>
 
-        <div>
-          <h2>Features</h2>
+              <div className="stat-card">
+                <h3>
+                  Total Amount
+                </h3>
 
-          <ul>
-            <li>Bill Management</li>
+                <p>
+                  ₹
+                  {
+                    stats.totalAmount
+                  }
+                </p>
+              </div>
+            </div>
 
-            <li>
-              Usage Analytics
-            </li>
+            <div className="category-list">
+              <h2>
+                Categories
+              </h2>
 
-            <li>
-              Google OAuth
-            </li>
+              <ul>
+                {stats.categories?.map(
+                  (
+                    category
+                  ) => (
+                    <li
+                      key={
+                        category._id
+                      }
+                    >
+                      {
+                        category._id
+                      }
 
-            <li>
-              JWT Authentication
-            </li>
-          </ul>
-        </div>
+                      {' - '}
+
+                      {
+                        category.count
+                      }
+                    </li>
+                  )
+                )}
+              </ul>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

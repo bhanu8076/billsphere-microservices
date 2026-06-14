@@ -4,6 +4,7 @@ import {
   loginAPI,
   registerAPI,
   logoutAPI,
+  getCurrentUserAPI,
 } from './authAPI';
 
 export const registerUser =
@@ -54,6 +55,24 @@ export const logoutUserAsync =
       } catch (error) {
         return thunkAPI.rejectWithValue(
           error.response?.data?.message
+        );
+      }
+    }
+  );
+
+  export const getCurrentUser =
+  createAsyncThunk(
+    'auth/currentUser',
+
+    async (_, thunkAPI) => {
+      try {
+        const response =
+          await getCurrentUserAPI();
+
+        return response.data.user;
+      } catch (error) {
+        return thunkAPI.rejectWithValue(
+          null
         );
       }
     }

@@ -4,6 +4,8 @@ import {
   loginUser,
   registerUser,
   logoutUserAsync,
+  getCurrentUser,
+
 } from './authThunk';
 
 const initialState = {
@@ -67,6 +69,27 @@ const authSlice = createSlice({
           state.user = null;
 
           state.isAuthenticated = false;
+        }
+      )
+
+      .addCase(
+        getCurrentUser.fulfilled,
+        (state, action) => {
+          state.user =
+            action.payload;
+
+          state.isAuthenticated =
+            true;
+        }
+      )
+
+      .addCase(
+        getCurrentUser.rejected,
+        (state) => {
+          state.user = null;
+
+          state.isAuthenticated =
+            false;
         }
       );
   },

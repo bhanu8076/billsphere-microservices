@@ -4,6 +4,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
+import Bills from '../pages/Bills';
 
 function AppRoutes() {
   return (
@@ -20,6 +21,15 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/bills"
+          element={
+            <ProtectedRoute>
+              <Bills />
             </ProtectedRoute>
           }
         />

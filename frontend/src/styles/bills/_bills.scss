@@ -1,0 +1,61 @@
+.bill-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.bill-form {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+
+  input {
+    flex: 1;
+    min-width: 180px;
+
+    padding: 10px;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+
+  button {
+    background: #2563eb;
+    color: white;
+    border: none;
+
+    padding: 12px 20px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+  }
+}
+
+.bill-list {
+  display: grid;
+  gap: 20px;
+}
+
+.bill-card {
+  background: white;
+  padding: 20px;
+
+  border-radius: 12px;
+
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  h3 {
+    color: #2563eb;
+  }
+
+  p {
+    margin-top: 8px;
+  }
+}

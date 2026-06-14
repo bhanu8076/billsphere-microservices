@@ -1,5 +1,6 @@
 const { Kafka } = require("kafkajs");
 const Usage = require("../models/Usage");
+const logger = require("../utils/logger");
 
 const kafka = new Kafka({
   clientId: "usage-service",
@@ -18,7 +19,7 @@ const runConsumer = async () => {
     fromBeginning: true,
   });
 
-  console.log("Kafka Consumer Connected");
+  logger.log("Kafka Consumer Connected");
 
   await consumer.run({
     eachMessage: async ({ message }) => {
@@ -46,7 +47,7 @@ const runConsumer = async () => {
           },
         );
 
-        console.log("Usage analytics updated");
+        logger.log("Usage analytics updated");
       }
     },
   });

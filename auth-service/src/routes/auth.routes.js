@@ -17,6 +17,7 @@ const {
   login,
   logout,
   getProfile,
+  getCurrentUser
 } = require(
   '../controllers/auth.controller'
 );
@@ -91,6 +92,12 @@ router.get(
   '/profile',
   authMiddleware,
   getProfile
+);
+
+router.get(
+  '/me',
+  authMiddleware,
+  getCurrentUser
 );
 
 module.exports = router;

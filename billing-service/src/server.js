@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const app = require('./app');
 const connectDB = require('./config/db');
+const logger = require('./utils/logger');
 
 const {
   connectRedis,
@@ -22,12 +23,10 @@ const startServer = async () => {
     await connectProducer();
 
     app.listen(PORT, () => {
-      console.log(
-        `Billing Service running on port ${PORT}`
-      );
+      logger.log(`Billing Service running on port ${PORT}`);
     });
   } catch (error) {
-    console.error(error);
+    logger.error('Billing Service startup failed', error);
   }
 };
 

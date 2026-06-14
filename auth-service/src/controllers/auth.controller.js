@@ -106,3 +106,18 @@ exports.getProfile = async (req, res) => {
     });
   }
 };
+
+exports.getCurrentUser = async (
+  req,
+  res
+) => {
+  res.status(200).json({
+    success: true,
+
+    user: {
+      id: req.user.id,
+      email: req.user.email,
+      name: req.user.name,
+    },
+  });
+};

@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const app = require('./app');
+const logger = require('./utils/logger');
 
 const connectDB = require(
   './config/db'
@@ -19,9 +20,7 @@ const start = async () => {
   await runConsumer();
 
   app.listen(PORT, () => {
-    console.log(
-      `Usage Service running on ${PORT}`
-    );
+    logger.log(`Usage Service running on ${PORT}`);
   });
 };
 

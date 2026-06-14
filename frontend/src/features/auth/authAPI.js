@@ -24,3 +24,9 @@ export const googleLogin = () => {
   window.location.href =
     'http://localhost:5001/api/auth/google';
 };
+
+export const getMeAPI = () => {
+  return api.get(
+    'http://localhost:5001/api/auth/me'
+  );
+};

@@ -1,0 +1,38 @@
+.navbar {
+  background: white;
+
+  padding: 15px 30px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.1);
+
+  &__logo {
+    color: #2563eb;
+  }
+
+  &__logout {
+    padding: 10px 18px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #dc2626;
+
+    color: white;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+    &:hover {
+      background: #b91c1c;
+    }
+  }
+}
